@@ -1,0 +1,132 @@
+﻿Use cWebView.pkg
+Use cWebPanel.pkg
+Use cWebForm.pkg
+Use cWebButton.pkg
+Use cWebGroup.pkg
+Use cWebSpacer.pkg
+Use cWebHtmlBox.pkg
+Use cWebMenuGroup.pkg
+Use cWebMenuItem.pkg
+Use cWebLabel.pkg
+Use cWebList.pkg
+Use cWebColumn.pkg
+
+Object oDashboard is a cWebView
+
+    Set piMaxWidth to 1024
+    Set psCaption to "Dashboard"
+    Set peViewType to vtUndefined
+    Set pbShowCaption to False
+    Set psCSSClass to "Dashboard"
+    
+    Object oWebMainPanel is a cWebPanel
+        Set piColumnCount to 12
+
+        WebSetResponsive piColumnCount rmMobile to 12
+        WebSetResponsive piColumnCount rmTabletPortrait to 12
+    
+        Object oTiles_grp is a cWebGroup
+            Set piColumnSpan to 6
+            Set pbShowBorder to False
+            Set pbShowCaption to False
+            Set piColumnCount to 12
+            Set psCSSClass to "TilesGroup"
+    
+            // ---------------------------------------------------------
+            // Welcome Tile
+            // ---------------------------------------------------------
+            Object oWelcomeTile is a cWebHtmlBox
+                Set piColumnSpan to 6
+                Set psCSSClass to "Tile Light"
+                Set psHtml to "<div class='WebCon_Sizer'><div class='Tile_Title'>Welcome</div><div class='Tile_Subtitle'>--</div></div>"
+                Set piColumnIndex to 0
+
+                Procedure OnLoad
+                    Send UpdateHTML ("<div class='WebCon_Sizer'><div class='Tile_Title'>Welcome</div><div class='Tile_Subtitle'>" - htmlEncode(psUserName(ghoWebSessionManager)) - "</div></div>")
+                End_Procedure
+            End_Object
+
+            // ---------------------------------------------------------
+            // TILE: LIGAS
+            // ---------------------------------------------------------
+            Object oLigaTile is a cWebHtmlBox
+                Set pbServerOnClick to True
+                Set piColumnSpan to 7
+                Set piColumnIndex to 7
+                Set psCSSClass to "Tile Light"
+                Set psHtml to "<div class='WebCon_Sizer' data-ServerOnClick='openview'><div class='Tile_Title'>Ligas</div><div class='Tile_Subtitle'>Ver listado</div></div>"
+
+                Procedure OnClick String sId String sParam
+                    Send NavigateForward of oWebApp oSelectLiga ""
+                End_Procedure
+            End_Object
+
+            // ---------------------------------------------------------
+            // TILE: EQUIPOS
+            // ---------------------------------------------------------
+            Object oEquipoTile is a cWebHtmlBox
+                Set pbServerOnClick to True
+                Set piColumnSpan to 7
+                Set piColumnSpan to 7
+                Set psCSSClass to "Tile LightAlternate"
+                Set psHtml to "<div class='WebCon_Sizer' data-ServerOnClick='openview'><div class='Tile_Title'>Equipos</div><div class='Tile_Subtitle'>Ver listado</div></div>"
+
+                Procedure OnClick String sId String sParam
+                    Send NavigateForward of oWebApp oSelectEquipo ""
+                End_Procedure
+            End_Object
+
+            // ---------------------------------------------------------
+            // TILE: ENTRENADORES
+            // ---------------------------------------------------------
+            Object oEntrenadorTile is a cWebHtmlBox
+                Set pbServerOnClick to True
+                Set piColumnSpan to 7
+                Set piColumnIndex to 7
+                Set psCSSClass to "Tile Dark"
+                Set psHtml to "<div class='WebCon_Sizer' data-ServerOnClick='openview'><div class='Tile_Title'>Entrenadores</div><div class='Tile_Subtitle'>Ver listado</div></div>"
+
+                Procedure OnClick String sId String sParam
+                    Send NavigateForward of oWebApp oSelectEntrenador ""
+                End_Procedure
+            End_Object
+
+            // ---------------------------------------------------------
+            // TILE: JUGADORES
+            // ---------------------------------------------------------
+            Object oJugadorTile is a cWebHtmlBox
+                Set pbServerOnClick to True
+                Set piColumnSpan to 7
+                Set piColumnIndex to 7
+                Set psCSSClass to "Tile DarkAlternate"
+                Set psHtml to "<div class='WebCon_Sizer' data-ServerOnClick='openview'><div class='Tile_Title'>Jugadores</div><div class='Tile_Subtitle'>Ver listado</div></div>"
+
+                Procedure OnClick String sId String sParam
+                    Send NavigateForward of oWebApp oSelectJugador ""
+                End_Procedure
+            End_Object
+
+            // ---------------------------------------------------------
+            // TILE: POSICIONES
+            // ---------------------------------------------------------
+            Object oPosicionTile is a cWebHtmlBox
+                Set pbServerOnClick to True
+                Set piColumnSpan to 7
+                Set piColumnIndex to 7
+                Set psCSSClass to "Tile Light"
+                Set psHtml to "<div class='WebCon_Sizer' data-ServerOnClick='openview'><div class='Tile_Title'>Posiciones</div><div class='Tile_Subtitle'>Ver listado</div></div>"
+
+                Procedure OnClick String sId String sParam
+                    Send NavigateForward of oWebApp oSelectPosicion ""
+                End_Procedure
+            End_Object
+
+        End_Object  // oTiles_grp
+    
+    End_Object  // oWebMainPanel
+    
+    Procedure OnBeforeShow
+        // Each time this view is shown we will update the appropriate information.
+    End_Procedure
+
+End_Object
