@@ -36,7 +36,7 @@ Object oDashboard is a cWebView
             // Welcome Tile
             // ---------------------------------------------------------
             Object oWelcomeTile is a cWebHtmlBox
-                Set piColumnSpan to 6
+                Set piColumnSpan to 4
                 Set psCSSClass to "Tile Light"
                 Set psHtml to "<div class='WebCon_Sizer'><div class='Tile_Title'>Welcome</div><div class='Tile_Subtitle'>--</div></div>"
                 Set piColumnIndex to 0
@@ -51,8 +51,8 @@ Object oDashboard is a cWebView
             // ---------------------------------------------------------
             Object oLigaTile is a cWebHtmlBox
                 Set pbServerOnClick to True
-                Set piColumnSpan to 7
-                Set piColumnIndex to 7
+                Set piColumnSpan to 4
+                Set piColumnIndex to 4
                 Set psCSSClass to "Tile Light"
                 Set psHtml to "<div class='WebCon_Sizer' data-ServerOnClick='openview'><div class='Tile_Title'>Ligas</div><div class='Tile_Subtitle'>Ver listado</div></div>"
 
@@ -67,7 +67,7 @@ Object oDashboard is a cWebView
             Object oEquipoTile is a cWebHtmlBox
                 Set pbServerOnClick to True
                 Set piColumnSpan to 7
-                Set piColumnSpan to 7
+                Set piColumnSpan to 4
                 Set psCSSClass to "Tile LightAlternate"
                 Set psHtml to "<div class='WebCon_Sizer' data-ServerOnClick='openview'><div class='Tile_Title'>Equipos</div><div class='Tile_Subtitle'>Ver listado</div></div>"
 
@@ -81,8 +81,8 @@ Object oDashboard is a cWebView
             // ---------------------------------------------------------
             Object oEntrenadorTile is a cWebHtmlBox
                 Set pbServerOnClick to True
-                Set piColumnSpan to 7
-                Set piColumnIndex to 7
+                Set piColumnSpan to 4
+                Set piColumnIndex to 4
                 Set psCSSClass to "Tile Dark"
                 Set psHtml to "<div class='WebCon_Sizer' data-ServerOnClick='openview'><div class='Tile_Title'>Entrenadores</div><div class='Tile_Subtitle'>Ver listado</div></div>"
 
@@ -96,8 +96,8 @@ Object oDashboard is a cWebView
             // ---------------------------------------------------------
             Object oJugadorTile is a cWebHtmlBox
                 Set pbServerOnClick to True
-                Set piColumnSpan to 7
-                Set piColumnIndex to 7
+                Set piColumnSpan to 4
+                Set piColumnIndex to 0
                 Set psCSSClass to "Tile DarkAlternate"
                 Set psHtml to "<div class='WebCon_Sizer' data-ServerOnClick='openview'><div class='Tile_Title'>Jugadores</div><div class='Tile_Subtitle'>Ver listado</div></div>"
 
@@ -111,8 +111,8 @@ Object oDashboard is a cWebView
             // ---------------------------------------------------------
             Object oPosicionTile is a cWebHtmlBox
                 Set pbServerOnClick to True
-                Set piColumnSpan to 7
-                Set piColumnIndex to 7
+                Set piColumnSpan to 4
+                Set piColumnIndex to 4
                 Set psCSSClass to "Tile Light"
                 Set psHtml to "<div class='WebCon_Sizer' data-ServerOnClick='openview'><div class='Tile_Title'>Posiciones</div><div class='Tile_Subtitle'>Ver listado</div></div>"
 
