@@ -14,26 +14,30 @@ Use centrenadorDataDictionary.dd
 
 Object oZoomEntrenador is a cWebView
     Set piColumnCount to 12
-    Set psCaption to "ZoomEntrenador"
+    Set psCaption to "Entrenador"
     Set peWebViewStyle to wvsDrilldown
     Set peViewType to vtZoom
     Set pbShowCaption to False
     Set Verify_Save_Msg to 0
     Set piMaxWidth to 1024
+    
+    // ---------------------------------------------------------
+    // DDO STRUCTURE (LIGA → EQUIPO → ENTRENADOR)
+    // ---------------------------------------------------------
 
     Object oliga_DD is a cligaDataDictionary
     End_Object 
 
     Object oequipo_DD is a cequipoDataDictionary
-        Set DDO_Server To oliga_DD
+        Set DDO_Server to oliga_DD       // Equipo pertenece a Liga
     End_Object 
 
     Object oentrenador_DD is a centrenadorDataDictionary
-        Set DDO_Server To oequipo_DD
+        Set DDO_Server to oequipo_DD     // Entrenador pertenece a Equipo
     End_Object 
 
-    Set Main_DD To oentrenador_DD
-    Set Server  To oentrenador_DD
+    Set Main_DD to oentrenador_DD
+    Set Server  to oentrenador_DD
 
 
     Object oWebMainPanel is a cWebPanel
@@ -42,7 +46,7 @@ Object oZoomEntrenador is a cWebView
 
         Object oentrenadorNombre is a cWebForm
             Entry_Item entrenador.Nombre
-            Set piColumnSpan to 12
+            Set piColumnSpan to 10
             Set piColumnIndex to 0
             Set peLabelPosition to lpTop
             Set psLabel to "Nombre"
@@ -50,7 +54,7 @@ Object oZoomEntrenador is a cWebView
 
         Object oentrenadorApellido is a cWebForm
             Entry_Item entrenador.Apellido
-            Set piColumnSpan to 12
+            Set piColumnSpan to 10
             Set piColumnIndex to 0
             Set peLabelPosition to lpTop
             Set psLabel to "Apellido"
@@ -58,7 +62,7 @@ Object oZoomEntrenador is a cWebView
 
         Object oentrenadorNacionalidad is a cWebForm
             Entry_Item entrenador.Nacionalidad
-            Set piColumnSpan to 10
+            Set piColumnSpan to 8
             Set piColumnIndex to 0
             Set peLabelPosition to lpTop
             Set psLabel to "Nacionalidad"
@@ -66,14 +70,14 @@ Object oZoomEntrenador is a cWebView
 
         Object oequipoID is a cWebForm
             Entry_Item equipo.ID
-            Set piColumnSpan to 3
+            Set piColumnSpan to 2
             Set piColumnIndex to 0
             Set peLabelPosition to lpTop
             Set psLabel to "EquipoID"
             Set pbPromptButton to True
 
-// ToDo: Fill in the from-child parent Select view object name for navigate forward
-//            WebRegisterPath ntNavigateForward oSelectView
+            // Navegación hacia SelectEquipo desde el Zoom (FromChild)
+            WebRegisterPath ntNavigateForward oSelectEquipo
 
             Procedure OnPrompt
                 Send NavigatePath
@@ -160,6 +164,10 @@ Object oZoomEntrenador is a cWebView
         Send NavigateClose Self
     End_Procedure
 
+    // ---------------------------------------------------------
+    // NAVEGACIÓN (drill-down)
+    // ---------------------------------------------------------
+    
     Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
         Case Begin
             Case (NavigateData.eNavigateType = nfFromMain)
