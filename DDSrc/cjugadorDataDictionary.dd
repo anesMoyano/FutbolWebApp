@@ -15,8 +15,12 @@ Class cjugadorDataDictionary is a DataDictionary
 
         Set Add_Server_File to equipo.File_Number 
         
-        // Esto indica que EQUIPO es la tabla padre de JUGADOR
-        // Relación: Equipo.ID = Jugador.EquipoID
+         Set ParentNullAllowed equipo.File_Number to True // Permite que un jugador no tenga equipo asignado (relación opcional)
+        
+        // Relación lógica:
+        //   Equipo.ID = Jugador.EquipoID
+        // Si ParentNullAllowed = False → el jugador debe tener equipo obligatorio
+        // Si ParentNullAllowed = True  → el jugador puede no tener equipo asignado
 
         Set Foreign_Field_Option DD_KEYFIELD DD_NOPUT to True
         Set Foreign_Field_Option DD_KEYFIELD DD_FINDREQ to True
