@@ -3,6 +3,10 @@
 Open jugador   //Abre la tabla JUGADOR 
 Open equipo    // Abre la tabla EQUIPO (necesaria para relaciones)
 
+Object oNacionalidadValidation is a CodeValidationTable  //Crea una tabla validación para el campo de Nacionalidad
+    Set Type_Value to "Nacionalidad"
+End_Object
+
 Class cjugadorDataDictionary is a DataDictionary
     
     Procedure Construct_Object
@@ -18,6 +22,9 @@ Class cjugadorDataDictionary is a DataDictionary
         Set Foreign_Field_Option DD_KEYFIELD DD_FINDREQ to True
         Set Foreign_Field_Option DD_INDEXFIELD DD_NOPUT to True
         Set Foreign_Field_Option DD_DEFAULT DD_DISPLAYONLY to True
+        
+        Set Field_Value_Table Field jugador.Nacionalidad to oNacionalidadValidation 
+        //Asocia la tabla de validación creada antes al campo Nacionalidad del jugador.
 
     End_Procedure
 
