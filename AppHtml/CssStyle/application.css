@@ -1,0 +1,49 @@
+/* ======== FONDO GENERAL ======== */
+.Dashboard {
+    background: #0d1117; /* Fondo oscuro */
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* ======== BARRA SUPERIOR (HEADER) ======== */
+.HeaderPanel {
+    background: linear-gradient(90deg, #0f5132, #198754);
+    color: white !important;
+    border-bottom: 2px solid #0a3622;
+}
+
+/* ======== TILES ======== */
+.Tile {
+    background-color: #1b2a2f; /* Verde oscuro grisáceo */
+    color: #d1f7d6; /* Verde claro */
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 255, 150, 0.15);
+    transition: all 0.25s ease;
+}
+
+/* Hover con efecto */
+.Tile:hover {
+    background-color: #23403a;
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(0, 255, 150, 0.25);
+}
+
+/* ======== TEXTO DE LOS TILES ======== */
+.Tile_Title, .Tile_Subtitle {
+    color: #d1f7d6 !important;
+}
+
+/* ======== BOTONES ======== */
+.WebButton {
+    background-color: #198754;
+    border-radius: 8px;
+    color: white;
+    border: none;
+}
+
+.WebButton:hover {
+    background-color: #157347;
+}

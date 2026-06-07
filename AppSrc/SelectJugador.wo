@@ -14,7 +14,7 @@ Use cligaDataDictionary.dd
 Use cequipoDataDictionary.dd
 Use cjugadorDataDictionary.dd
 
-
+// Vista Select de Jugadores
 Object oSelectJugador is a cWebView
     Set psCaption to "Lista Jugadores"
     Set peWebViewStyle to wvsDrilldown
@@ -22,26 +22,23 @@ Object oSelectJugador is a cWebView
     Set piColumnCount to 12
     Set pbShowCaption to False
     Set piMaxWidth to 1024
-    
-    // ---------------------------------------------------------
-    // DDO STRUCTURE (LIGA → EQUIPO → JUGADOR)
-    // ---------------------------------------------------------
 
+    // Estructura de DDOs: Liga → Equipo → Jugador
     Object oliga_DD is a cligaDataDictionary
     End_Object 
 
-    Object oequipo_DD is a cequipoDataDictionary // Equipo pertenece a Liga
-        Set DDO_Server to oliga_DD
+    Object oequipo_DD is a cequipoDataDictionary
+        Set DDO_Server to oliga_DD   // Equipo pertenece a Liga
     End_Object 
 
-    Object ojugador_DD is a cjugadorDataDictionary  // Jugador pertenece a Equipo
-        Set DDO_Server to oequipo_DD
+    Object ojugador_DD is a cjugadorDataDictionary
+        Set DDO_Server to oequipo_DD // Jugador pertenece a Equipo
     End_Object 
 
     Set Main_DD to ojugador_DD
     Set Server  to ojugador_DD
 
-
+    // Lista principal de jugadores
     Object oList is a cWebList
         Set piColumnSpan to 0
         Set psCSSClass to "MobileList"
@@ -50,30 +47,35 @@ Object oSelectJugador is a cWebView
         Set pbShowHeader to True
         Set piSortColumn to 0
 
+        // Columna: Nombre
         Object ojugadorNombre is a cWebColumn
             Entry_Item jugador.Nombre
             Set psCaption to "Nombre"
             Set piWidth to 400
         End_Object 
 
+        // Columna: Apellido
         Object ojugadorApellido is a cWebColumn
             Entry_Item jugador.Apellido
             Set psCaption to "Apellido"
             Set piWidth to 450
         End_Object 
 
+        // Columna: Nacionalidad
         Object ojugadorNacionalidad is a cWebColumn
             Entry_Item jugador.Nacionalidad
             Set psCaption to "Nacionalidad"
             Set piWidth to 250
         End_Object 
 
+        // Columna: EquipoID
         Object oequipoID is a cWebColumn
             Entry_Item equipo.ID
             Set psCaption to "EquipoID"
             Set piWidth to 100
         End_Object 
 
+        // Botón de detalle para abrir el ZoomJugador
         Object oDetailButton is a cWebColumnButton
             Set piWidth to 45
             Set pbFixedWidth to True
@@ -82,24 +84,22 @@ Object oSelectJugador is a cWebView
             Set psBtnCssClass to "WebButtonIcon WebIcon_Info"
             Set peAlign to alignRight
 
-           // Navegación hacia ZoomJugador
+            // Navegación al ZoomJugador desde el botón
             WebRegisterPath ntNavigateForward oZoomJugador
 
             Procedure OnClick
+                // Abrimos el Zoom del jugador
                 Send NavigatePath
             End_Procedure
 
-           // Enviar datos al Zoom en modo solo lectura
             Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+                // Abrimos el Zoom en modo solo lectura
                 Move True to NavigateData.bReadOnly
             End_Procedure
-
         End_Object 
 
-// ToDo: Fill in the from-parent child Select view object name for navigate forward
-//        WebRegisterPath ntNavigateForward oSelectView
-
-          WebRegisterPath ntNavigateForward oZoomJugador
+        // Navegación al ZoomJugador al pulsar una fila
+        WebRegisterPath ntNavigateForward oZoomJugador
 
         Procedure OnRowClick String sRowId
             tWebNavigateData NavigateData
@@ -107,86 +107,89 @@ Object oSelectJugador is a cWebView
 
             Case Begin
                 Case (NavigateData.eNavigateType = nfFromParent)
-// ToDo: Fill in the from-parent child Select view object name for navigate forward
-Error DFERR_PROGRAM "NavigateForward to this from-parent child Select view not yet defined"
-//                    Send NavigateForward of oSelectView Self
+                    // No existe Select hijo → error controlado
+                    Error DFERR_PROGRAM "NavigateForward no definido"
                     Case Break
 
                 Case (NavigateData.eNavigateType = nfFromChild)
+                    // Si venimos de un Zoom hijo, cerramos esta vista
                     Send NavigateClose Self
                     Case Break
 
                 Case (NavigateData.eNavigateType = nfFromMain)
+                    // Si venimos del Dashboard, abrimos el Zoom
                     Send NavigatePath
                     Case Break
-                Case Else // must be nfUndefined
-// ToDo: Fill in the from-parent child Select view object name for navigate forward
-// Error DFERR_PROGRAM "NavigateForward to this from-parent child Select view not yet defined"
-//                    Send NavigateForward of oSelectView Self
-                    Send NavigatePath
 
+                Case Else
+                    // Cualquier otro caso: navegar al ZoomJugador
+                    Send NavigatePath
             Case End
         End_Procedure
 
         Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+            // Abrimos el Zoom en modo solo lectura
             Move True to NavigateData.bReadOnly
         End_Procedure
 
     End_Object 
 
+    // Grupo de acciones (Search, New…)
     Object oActionGroup is a cWebMenuGroup
 
+        // Botón de búsqueda
         Object oSearch is a cWebMenuItem
             Set psCSSClass to "WebPromptMenuItem"
             Set psCaption to "Search"
 
             Procedure OnClick
+                // Ejecuta búsqueda en la lista
                 Send Search of oList
             End_Procedure
-
         End_Object 
 
+        // Botón para crear un nuevo jugador
         Object oNewButton is a cWebMenuItem
             Set psCSSClass to "WebClearMenuItem"
             Set psCaption to "New"
 
+            // Navegación al ZoomJugador en modo nuevo registro
             WebRegisterPath ntNavigateForward oZoomJugador
 
             Procedure OnClick
+                // Abrimos el Zoom para crear un nuevo jugador
                 Send NavigatePath
             End_Procedure
 
             Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+                // Indicamos que es un registro nuevo
                 Move True to NavigateData.bNewRecord
             End_Procedure
-
         End_Object 
     End_Object 
 
+    // Ajuste de botones según el tipo de navegación
     Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
         WebSet pbRender of oNewButton to True
         WebSet pbRender of oDetailButton to True
 
         Case Begin
             Case (NavigateData.eNavigateType = nfFromParent)
-                // If from parent, this is a constrained drill down
+                // Navegación desde vista padre
                 Case Break
 
             Case (NavigateData.eNavigateType = nfFromChild)
-                // If from child, this is a probably a parent lookup from a Zoom
+                // Navegación desde vista hija
                 Case Break
 
             Case (NavigateData.eNavigateType = nfFromMain)
-                // If from main, this is a probably a main-file lookup from a Zoom
+                // Desde el Dashboard ocultamos el botón de detalle
                 WebSet pbRender of oDetailButton to False
                 Case Break
 
-            Case Else // must be nfUndefined
-                // This may be the start of a drilldown query or this may be used for some kind of custom query.
-
+            Case Else
+                // Otros casos
         Case End
-
     End_Procedure
 
-
-End_Object 
+End_Object

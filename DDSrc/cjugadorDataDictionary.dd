@@ -1,34 +1,23 @@
 ﻿Use DataDict.pkg
 
-Open jugador   //Abre la tabla JUGADOR 
-Open equipo    // Abre la tabla EQUIPO (necesaria para relaciones)
-
-Object oNacionalidadValidation is a CodeValidationTable  //Crea una tabla validación para el campo de Nacionalidad
-    Set Type_Value to "Nacionalidad"
-End_Object
+Open jugador
+Open jugadorposicion
+Open equipo
 
 Class cjugadorDataDictionary is a DataDictionary
     
     Procedure Construct_Object
         Forward Send Construct_Object
-        Set Main_File to jugador.File_Number  // Este DD controla la tabla JUGADOR
+        Set Main_File to jugador.File_Number
 
-        Set Add_Server_File to equipo.File_Number 
-        
-         Set ParentNullAllowed equipo.File_Number to True // Permite que un jugador no tenga equipo asignado (relación opcional)
-        
-        // Relación lógica:
-        //   Equipo.ID = Jugador.EquipoID
-        // Si ParentNullAllowed = False → el jugador debe tener equipo obligatorio
-        // Si ParentNullAllowed = True  → el jugador puede no tener equipo asignado
+        Set Add_Server_File to equipo.File_Number
+
+        Set Add_Client_File to jugadorposicion.File_Number
 
         Set Foreign_Field_Option DD_KEYFIELD DD_NOPUT to True
         Set Foreign_Field_Option DD_KEYFIELD DD_FINDREQ to True
         Set Foreign_Field_Option DD_INDEXFIELD DD_NOPUT to True
         Set Foreign_Field_Option DD_DEFAULT DD_DISPLAYONLY to True
-        
-        Set Field_Value_Table Field jugador.Nacionalidad to oNacionalidadValidation 
-        //Asocia la tabla de validación creada antes al campo Nacionalidad del jugador.
 
     End_Procedure
 

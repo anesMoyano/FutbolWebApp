@@ -13,6 +13,7 @@ Use ZoomLiga.wo
 
 Use cligaDataDictionary.dd
 
+// Vista Select de Ligas
 Object oSelectLiga is a cWebView
     Set psCaption to "Lista Liga"
     Set peWebViewStyle to wvsDrilldown
@@ -21,13 +22,14 @@ Object oSelectLiga is a cWebView
     Set pbShowCaption to False
     Set piMaxWidth to 1024
 
+    // DDO principal: Liga
     Object oliga_DD is a cligaDataDictionary
     End_Object 
 
     Set Main_DD to oliga_DD
     Set Server  to oliga_DD
 
-
+    // Lista principal de ligas
     Object oList is a cWebList
         Set piColumnSpan to 0
         Set psCSSClass to "MobileList"
@@ -36,30 +38,35 @@ Object oSelectLiga is a cWebView
         Set pbShowHeader to True
         Set piSortColumn to 0
 
+        // Columna: Nombre de la liga
         Object oligaNombre is a cWebColumn
             Entry_Item liga.Nombre
             Set psCaption to "Nombre"
             Set piWidth to 500
         End_Object 
 
+        // Columna: País
         Object oligaPais is a cWebColumn
             Entry_Item liga.Pais
             Set psCaption to "Pais"
             Set piWidth to 200
         End_Object 
 
+        // Columna: Número de equipos actuales
         Object oligaEquipos is a cWebColumn
             Entry_Item liga.Equipos
             Set psCaption to "Equipos"
             Set piWidth to 100
         End_Object 
 
+        // Columna: Máximo de equipos permitidos
         Object oligaEquiposMax is a cWebColumn
             Entry_Item liga.EquiposMax
             Set psCaption to "EquiposMax"
             Set piWidth to 100
         End_Object 
 
+        // Botón de detalle para abrir el ZoomLiga
         Object oDetailButton is a cWebColumnButton
             Set piWidth to 45
             Set pbFixedWidth to True
@@ -67,26 +74,22 @@ Object oSelectLiga is a cWebView
             Set piListRowSpan to 1
             Set psBtnCssClass to "WebButtonIcon WebIcon_Info"
             Set peAlign to alignRight
-            
-        // -----------------------------------------------------
-        // NAVEGACIÓN DESDE LA FILA
-        // -----------------------------------------------------
+
+            // Navegación al ZoomLiga desde el botón
             WebRegisterPath ntNavigateForward oZoomLiga
 
             Procedure OnClick
+                // Abrimos el Zoom de la liga
                 Send NavigatePath
             End_Procedure
 
-           // Enviar datos al Zoom en modo solo lectura
             Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+                // Abrimos el Zoom en modo solo lectura
                 Move True to NavigateData.bReadOnly
             End_Procedure
-
         End_Object 
 
-// ToDo: Fill in the from-parent child Select view object name for navigate forward
-//        WebRegisterPath ntNavigateForward oSelectView
-
+        // Navegación al ZoomLiga al pulsar una fila
         WebRegisterPath ntNavigateForward oZoomLiga
 
         Procedure OnRowClick String sRowId
@@ -95,87 +98,88 @@ Object oSelectLiga is a cWebView
 
             Case Begin
                 Case (NavigateData.eNavigateType = nfFromParent)
-// ToDo: Fill in the from-parent child Select view object name for navigate forward
-Error DFERR_PROGRAM "NavigateForward to this from-parent child Select view not yet defined"
-//                    Send NavigateForward of oSelectView Self
+                    // No existe Select hijo → error controlado
+                    Error DFERR_PROGRAM "NavigateForward no definido"
                     Case Break
 
                 Case (NavigateData.eNavigateType = nfFromChild)
+                    // Si venimos de un Zoom hijo, cerramos esta vista
                     Send NavigateClose Self
                     Case Break
 
                 Case (NavigateData.eNavigateType = nfFromMain)
-                    Send NavigatePath
+                    // Desde el Dashboard no navegamos automáticamente
                     Case Break
-                Case Else // must be nfUndefined
-// ToDo: Fill in the from-parent child Select view object name for navigate forward
-// Error DFERR_PROGRAM "NavigateForward to this from-parent child Select view not yet defined"
-//                    Send NavigateForward of oSelectView Self
-                    Send NavigatePath
 
+                Case Else
+                    // Cualquier otro caso: navegar al ZoomLiga
+                    Send NavigatePath
             Case End
         End_Procedure
 
         Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+            // Abrimos el Zoom en modo solo lectura
             Move True to NavigateData.bReadOnly
         End_Procedure
 
     End_Object 
 
+    // Grupo de acciones (Search, New…)
     Object oActionGroup is a cWebMenuGroup
 
+        // Botón de búsqueda
         Object oSearch is a cWebMenuItem
             Set psCSSClass to "WebPromptMenuItem"
             Set psCaption to "Search"
 
             Procedure OnClick
+                // Ejecuta búsqueda en la lista
                 Send Search of oList
             End_Procedure
-
         End_Object 
 
-// Botón New → abre ZoomLiga en modo nuevo registro
+        // Botón para crear una nueva liga
         Object oNewButton is a cWebMenuItem
             Set psCSSClass to "WebClearMenuItem"
             Set psCaption to "New"
 
+            // Navegación al ZoomLiga en modo nuevo registro
             WebRegisterPath ntNavigateForward oZoomLiga
 
             Procedure OnClick
+                // Abrimos el Zoom para crear una nueva liga
                 Send NavigatePath
             End_Procedure
 
             Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+                // Indicamos que es un registro nuevo
                 Move True to NavigateData.bNewRecord
             End_Procedure
-
         End_Object 
     End_Object 
 
+    // Ajuste de botones según el tipo de navegación
     Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
         WebSet pbRender of oNewButton to True
         WebSet pbRender of oDetailButton to True
 
         Case Begin
             Case (NavigateData.eNavigateType = nfFromParent)
-                // If from parent, this is a constrained drill down
+                // Navegación desde vista padre
                 Case Break
 
             Case (NavigateData.eNavigateType = nfFromChild)
-                // If from child, this is a probably a parent lookup from a Zoom
+                // Navegación desde vista hija
                 Case Break
 
             Case (NavigateData.eNavigateType = nfFromMain)
-                // If from main, this is a probably a main-file lookup from a Zoom
+                // Desde el Dashboard ocultamos el botón de detalle
                 WebSet pbRender of oDetailButton to False
                 Case Break
 
-            Case Else // must be nfUndefined
-                // This may be the start of a drilldown query or this may be used for some kind of custom query.
-
+            Case Else
+                // Otros casos
         Case End
-
     End_Procedure
 
-
-End_Object 
+End_Object

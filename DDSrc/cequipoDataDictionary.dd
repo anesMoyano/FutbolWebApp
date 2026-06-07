@@ -1,9 +1,9 @@
 ﻿Use DataDict.pkg
 
 Open equipo
-Open entrenador  //Abre la tabla ENTRENADOR (es cliente/hijo de equipo)
-Open jugador     //también hijo de equipo
-Open liga        //padre de equipo
+Open entrenador
+Open jugador
+Open liga
 
 Class cequipoDataDictionary is a DataDictionary
     
@@ -12,11 +12,9 @@ Class cequipoDataDictionary is a DataDictionary
         Set Main_File to equipo.File_Number
 
         Set Add_Server_File to liga.File_Number
-        // Relación: Liga.ID = Equipo.LigaID
-        // esto indica que un equipo pertenece a la liga
 
-        Set Add_Client_File to entrenador.File_Number // un equipo puede tener un entrenador
-        Set Add_Client_File to jugador.File_Number //un equipo puede tener muchos jugadores
+        Set Add_Client_File to entrenador.File_Number
+        Set Add_Client_File to jugador.File_Number
 
         Set Foreign_Field_Option DD_KEYFIELD DD_NOPUT to True
         Set Foreign_Field_Option DD_KEYFIELD DD_FINDREQ to True

@@ -1,7 +1,7 @@
 ﻿Use DataDict.pkg
 
 Open entrenador
-Open equipo  // tabla padre
+Open equipo
 
 Class centrenadorDataDictionary is a DataDictionary
     
@@ -9,9 +9,7 @@ Class centrenadorDataDictionary is a DataDictionary
         Forward Send Construct_Object
         Set Main_File to entrenador.File_Number
 
-        Set Add_Server_File to equipo.File_Number 
-        // Relación: Equipo.ID = Entrenador.EquipoID
-        // Un entrenador pertenece a un equipo
+        Set Add_Server_File to equipo.File_Number
 
         Set Foreign_Field_Option DD_KEYFIELD DD_NOPUT to True
         Set Foreign_Field_Option DD_KEYFIELD DD_FINDREQ to True
