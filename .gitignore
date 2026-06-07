@@ -1,0 +1,22 @@
+# --- Temporales y Logs de Ejecución ---
+Programs/*.log
+Programs/*.exe
+Programs/*.dbg
+Programs/*.pge
+
+# --- Archivos de Caché y Compilación ---
+Data/*.cch
+Data/*.vdf
+Data/*.dbd
+AppHtml/DfEngine/
+AppHtml/_SASS_CACHE_/
+
+# --- Archivos de Configuración Local del IDE ---
+IdeSrc/*.dsk
+IdeSrc/*.dep
+*.swp
+*.tmp
+
+# --- Carpetas que se regeneran solas ---
+/Bitmaps/
+/Cache/
